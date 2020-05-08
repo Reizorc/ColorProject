@@ -12,4 +12,4 @@ def describe(img,nbpalier):
     (hist, _)= np.histogram(imhist.ravel(),bins =pow(n,3))
     hist = hist.astype("float")
     hist /= (hist.sum()+1e-7)
-    return (hist)
+    return hist
