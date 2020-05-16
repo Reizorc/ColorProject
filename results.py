@@ -17,7 +17,7 @@ def results(y_true,y_predict,dir_im = ""):
 	# Matrice de confusion
 	conf = confusion_matrix(y_true,y_pred)
 	C = pandas.DataFrame(conf,index=fruits,columns=fruits )
-	print(C)
+	print("\n\n",C)
 
 	# Precision de l'algorithme
 	p = 0
