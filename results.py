@@ -1,4 +1,3 @@
-
 from os import listdir
 import cv2 as cv
 import matplotlib.pyplot as plt
@@ -10,15 +9,16 @@ from decimal import Decimal
 # Affiche la matrice de confusion des resultats avec la précision de l'algo
 # (Optionel) Affiche les images avec la prédiction si un dossier d'images est spécifié
 
-def results(y_true,y_predict,dir_im = ""):
+def results(y_true,y_pred,dir_im = ""):
 	dic = { 0 : "Pomme", 1 : "Banane", 2 : "Orange" , 3 : "Tomate" }
 	fruits = ["Pomme","Banane","Orange","Tomate"]
 
 	# Matrice de confusion
 	conf = confusion_matrix(y_true,y_pred)
 	C = pandas.DataFrame(conf,index=fruits,columns=fruits )
-	print("\n\n",C)
-
+	print(" ------- Matrice de confusion pour la base de test ------- ")
+	print("\n",C)
+	
 	# Precision de l'algorithme
 	p = 0
 	m = len(y_true) # nombre d'images 
@@ -28,7 +28,7 @@ def results(y_true,y_predict,dir_im = ""):
 	p /= m	
 	p = Decimal(p)
 	p = round(p,2)
-	print("\nPrecision de l'algorithle : ",100*p,"%\n")
+	print("\nPrecision de l'algorithme : ",100*p,"%\n")
 
 	# Affichage des images avec prédictions
 	if dir_im != "":

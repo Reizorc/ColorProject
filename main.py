@@ -1,43 +1,44 @@
 import cv2 as cv
+from PIL import Image as pil
 from segmentation import segmentation
 from texture import texture
 from mesure_objet import mesure_objet
-from classfication import classify
+from Couleur import describe
+from classfication import test,train
+from results import results
 from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 from os import listdir,chdir
-dic = {"Apple": 0, "Banane" : 1, "Orange" : 2, "Tomate" : 3}
-reps = listdir("res2")
-x=[]
-y=[]
-for fruit in reps:
-    chdir('res2/'+fruit)
-    imgs = listdir()
-    for image in imgs:
-        print(image)
-        img = cv.imread(image)
-        imgseg = segmentation(img)
-        tex = texture(imgseg)
-        shape =  mesure_objet(imgseg)
-        tex2 = [i for i in tex.tolist()]
-        tex2.append(shape)
-        x.append(tex2)
-        y.append(dic[fruit])
-    chdir('../..')
-X=np.array(x)
-Y=np.array(y)
-randomforest=RandomForestClassifier(n_estimators=30)
-score = classify(X,Y,randomforest)
 
-pommeTest = cv.imread("res/Apple/Apple 122.png")
-bananeTest = cv.imread("res/Banane/Banana094.png")
-orangeTest = cv.imread("res/Orange/Orange0094.png")
-tomateTest = cv.imread("res/Tomate/Tamotoes0072.png")
+randomforest = RandomForestClassifier()
 
-imgseg = segmentation(tomateTest)
-tex = texture(imgseg)
-shape =  mesure_objet(imgseg)
-tex2 = [i for i in tex.tolist()]
-tex2.append(shape)
-X=np.array(tex2).reshape(1, -1)
-print(randomforest.predict(X))
+randomforest = train(randomforest)
+
+#test(randomforest)
+
+## Matrice de confusion ##
+chdir('images/testing')
+imgs = listdir()
+
+x_test = []
+
+for file in imgs:
+    features = []
+    img = pil.open(file)
+    imgseg = segmentation(img)
+    tex = [i for i in texture(imgseg).tolist()]
+    color = [i for i in describe(imgseg,8).tolist()]
+    shape =  mesure_objet(imgseg)
+    features = tex
+    features.append(shape)
+    features += color
+    x_test.append(features)
+
+X=np.array(x_test)
+
+Y=np.array([0,0,0,0,1,1,2,2,2,2,3,3])
+
+results(Y,randomforest.predict(X))
+
+
+
