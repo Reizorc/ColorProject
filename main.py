@@ -36,7 +36,7 @@ for file in imgs:
 
 X=np.array(x_test)
 
-Y=np.array([0,0,0,0,1,1,2,2,2,2,3,3])
+Y=np.array([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3])
 
 results(Y,randomforest.predict(X))
 
